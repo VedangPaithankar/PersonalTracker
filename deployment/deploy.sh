@@ -10,6 +10,8 @@ cd ~/storage/shared/Server/Projects/$PROJECT_NAME/backend || exit 1
 
 # Install/update dependencies
 npm install
+npm init -y
+npm install express body-parser cors
 
 # Kill old server if running
 pkill -f "node server.js"
