@@ -19,4 +19,8 @@ pkill -f "node server.js"
 # Start server in background
 nohup node server.js > server.log 2>&1 &
 
+cd $BASE_DIR/frontend || exit 1
+pkill -f "serve_frontend.py"
+nohup python3 serve_frontend.py > frontend.log 2>&1 &
+
 echo "$PROJECT_NAME deployed successfully!"
