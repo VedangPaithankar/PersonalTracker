@@ -457,16 +457,12 @@
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
         }
-        (async () => {
-            const hash = await hashPassword("Vedang123"); // change password here
-            localStorage.setItem("dashboardPassword", hash);
-            console.log("Password set:", hash);
-        })();
         async function checkPassword() {
             const input = document.getElementById("password-input").value;
-            const storedHash = localStorage.getItem("dashboardPassword");
+            const response = await fetch("http://localhost:3001/password-hash");
+            const { hash: storedHash } = await response.json();
+        
             const inputHash = await hashPassword(input);
-
             if (inputHash === storedHash) {
                 document.getElementById("login-screen").style.display = "none";
                 document.getElementById("dashboard-content").style.display = "block";
@@ -474,8 +470,6 @@
                 document.getElementById("error-message").style.display = "block";
             }
         }
-
-
         loadTasks();
     </script>
 
