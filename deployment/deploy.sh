@@ -21,7 +21,7 @@ nohup node server.js > server.log 2>&1 &
 # --- Frontend ---
 cd $BASE_DIR/frontend || exit 1
 pkill -f "serve_frontend.py"
-nohup python3 serve_frontend.py > frontend.log 2>&1 &
+nohup python3 serve_frontend.py &
 
 echo "$PROJECT_NAME deployed successfully!"
 echo "Frontend: http://localhost:$FRONTEND_PORT/"
