@@ -6,7 +6,7 @@ PORT=3001
 
 echo "Deploying $PROJECT_NAME on port $PORT..."
 
-cd ~/projects/$PROJECT_NAME/backend || exit 1
+cd ~/storage/shared/Server/Projects/$PROJECT_NAME/backend || exit 1
 
 # Install/update dependencies
 npm install
