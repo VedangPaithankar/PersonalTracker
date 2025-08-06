@@ -8,9 +8,6 @@ echo "Deploying $PROJECT_NAME on port $PORT..."
 
 cd ~/storage/shared/Server/Projects/$PROJECT_NAME/backend || exit 1
 
-pkg update && pkg upgrade
-pkg install nodejs
-
 # Install/update dependencies
 npm install
 
