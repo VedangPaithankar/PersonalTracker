@@ -376,6 +376,39 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
     <script>
+        const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 minutes
+        let logoutTimer;
+
+        function startSession() {
+            localStorage.setItem("isLoggedIn", "true");
+            resetLogoutTimer();
+            document.getElementById("login-screen").style.display = "none";
+            document.getElementById("dashboard-content").style.display = "block";
+        }
+
+        function resetLogoutTimer() {
+            clearTimeout(logoutTimer);
+            logoutTimer = setTimeout(logout, SESSION_TIMEOUT);
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            document.getElementById("login-screen").style.display = "flex";
+            document.getElementById("dashboard-content").style.display = "none";
+        }
+        window.onload = function () {
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                startSession();
+            }
+        };
+        ["click", "mousemove", "keydown", "scroll"].forEach(event => {
+            document.addEventListener(event, resetLogoutTimer);
+        });
+        document.getElementById("password-input").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        });
         // Generate months with highlight
         const monthsEl = document.getElementById("months");
         const months = ["January", "February", "March", "April", "May", "June",
@@ -461,8 +494,7 @@
 
             const inputHash = await hashPassword(input);
             if (inputHash === storedHash) {
-                document.getElementById("login-screen").style.display = "none";
-                document.getElementById("dashboard-content").style.display = "block";
+                startSession();
             } else {
                 document.getElementById("error-message").style.display = "block";
             }
