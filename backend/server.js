@@ -29,6 +29,10 @@ app.post("/add-task", (req, res) => {
   res.json({ success: true });
 });
 
+app.get("/password-hash", (req, res) => {
+  res.json({ hash: "6ef0b786fdbb11834c4dc337d9d80abd542ed674cbfd5e30ed7438067699fe37" });
+});
+
 app.get("/tasks/:category", (req, res) => {
   const category = req.params.category;
   res.json(tasks[category] || []);
