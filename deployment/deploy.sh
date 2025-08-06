@@ -34,6 +34,6 @@ pkill -f "http.server $FRONTEND_PORT" 2>/dev/null || true
 nohup python3 serve_frontend.py > $BASE_DIR/frontend/frontend.log 2>&1 &
 
 echo "$PROJECT_NAME deployed successfully!"
-echo "Frontend: http://localhost:$FRONTEND_PORT/"
-echo "Backend: http://localhost:$BACKEND_PORT/"
+echo "Frontend: http://192.168.1.51:$FRONTEND_PORT/"
+echo "Backend: http://192.168.1.51:$BACKEND_PORT/"
 

@@ -427,7 +427,7 @@
                 const ul = document.getElementById(listId);
                 ul.innerHTML = "";
 
-                const response = await fetch(`http://localhost:3001/tasks/${encodeURIComponent(title)}`);
+                const response = await fetch(`http://192.168.1.51:3001/tasks/${encodeURIComponent(title)}`);
                 const tasks = await response.json();
 
                 tasks.forEach((task, index) => {
@@ -437,7 +437,7 @@
                     checkbox.checked = task.done;
 
                     checkbox.addEventListener("change", async () => {
-                        await fetch("http://localhost:3001/update-task", {
+                        await fetch("http://192.168.1.51:3001/update-task", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ category: title, index, done: checkbox.checked })
@@ -459,7 +459,7 @@
         }
         async function checkPassword() {
             const input = document.getElementById("password-input").value;
-            const response = await fetch("http://localhost:3001/password-hash");
+            const response = await fetch("http://192.168.1.51:3001/password-hash");
             const { hash: storedHash } = await response.json();
         
             const inputHash = await hashPassword(input);

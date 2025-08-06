@@ -47,5 +47,5 @@ app.post("/update-task", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://192.168.1.51:${PORT}`);
 });
