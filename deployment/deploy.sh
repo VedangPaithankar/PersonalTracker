@@ -15,6 +15,8 @@ if [ -f "package.json" ] && [ ! -d "node_modules" ]; then
     npm install
 fi
 
+npm install express body-parser cors
+
 pkill -f "node server.js"
 nohup node server.js > server.log 2>&1 &
 
