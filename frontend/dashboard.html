@@ -374,7 +374,7 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
     <script>
         // Generate months with highlight
         const monthsEl = document.getElementById("months");
@@ -452,16 +452,13 @@
             }
         }
         async function hashPassword(password) {
-            const msgBuffer = new TextEncoder().encode(password);
-            const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+            return CryptoJS.SHA256(password).toString(CryptoJS.enc.Hex);
         }
         async function checkPassword() {
             const input = document.getElementById("password-input").value;
             const response = await fetch("http://192.168.1.51:3001/password-hash");
             const { hash: storedHash } = await response.json();
-        
+
             const inputHash = await hashPassword(input);
             if (inputHash === storedHash) {
                 document.getElementById("login-screen").style.display = "none";
