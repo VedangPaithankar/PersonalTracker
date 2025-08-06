@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Work Sans', sans-serif;
+            background: rgba(0, 0, 0, 0.9) url('image.webp') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+
+        .overlay {
+            background: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar with months + calendar */
+        .sidebar {
+            width: 300px;
+            background: rgba(20, 20, 20, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+        }
+
+        .months {
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: fadeMonths 8s infinite;
+        }
+
+        .months span {
+            font-size: 2rem;
+            margin: 4px 0;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .months .current {
+            font-weight: bold;
+            opacity: 1;
+            font-size: 2.2rem;
+            color: #00f0ff;
+        }
+
+        @keyframes fadeMonths {
+
+            0%,
+            45%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .calendar {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            background: rgba(40, 40, 40, 0.85);
+            border-radius: 12px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .calendar table {
+            width: 100%;
+            border-collapse: collapse;
+            color: white;
+            table-layout: fixed;
+        }
+
+        .calendar th {
+            padding: 10px 0;
+            background: rgba(60, 60, 60, 0.9);
+            font-weight: bold;
+            color: #00f0ff;
+            border-radius: 6px;
+        }
+
+        .calendar td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: background 0.3s, transform 0.2s;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .calendar td:hover {
+            background: rgba(0, 240, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .calendar .today {
+            background: #00f0ff;
+            color: black;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 0 8px #00f0ff;
+        }
+
+
+        /* Dashboard grid */
+        .dashboard {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .widget {
+            background: rgba(30, 30, 30, 0.85);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .widget h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .widget ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .widget li {
+            margin: 6px 0;
+        }
+
+        .widget input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        /* Levitating profile circle */
+        .profile-widget {
+            background: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .levitating-circle {
+            width: min(20vw, 400px);
+            height: min(20vw, 400px);
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .levitating-circle img {
+            width: 95%;
+            height: 95%;
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Add Task Button */
+        .add-task-btn {
+            grid-column: span 3;
+            justify-self: center;
+            padding: 12px 24px;
+            background: #00f0ff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: black;
+            font-weight: bold;
+        }
+
+        .add-task-btn:hover {
+            background: #00c8d4;
+        }
+
+        .shortcuts-widget {
+            grid-column: span 3;
+            text-align: center;
+        }
+
+        .shortcuts-widget h2 {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: #00f0ff;
+        }
+
+        .shortcuts {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .shortcut {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .shortcut img {
+            width: 45px;
+            height: 45px;
+        }
+
+        .shortcut:hover {
+            background: #00f0ff;
+            transform: scale(1.1);
+        }
+
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: rgba(30, 30, 30, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #00f0ff;
+        }
+
+        .login-box input {
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            width: 200px;
+            margin-bottom: 15px;
+        }
+
+        .login-box button {
+            padding: 10px 20px;
+            background: #00f0ff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .login-box button:hover {
+            background: #00c8d4;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="login-screen" class="login-screen">
+        <div class="login-box">
+            <h2>Enter Password</h2>
+            <input type="password" id="password-input" placeholder="Password">
+            <button onclick="checkPassword()">Login</button>
+            <p id="error-message" style="color: red; display: none;">Incorrect password!</p>
+        </div>
+    </div>
+    <div id="dashboard-content" style="display: none;">
+        <div class="overlay"></div>
+        <div class="container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="months" id="months"></div>
+                <div class="calendar" id="calendar"></div>
+            </div>
+
+            <!-- Dashboard -->
+            <div class="dashboard">
+                <div class="widget">
+                    <h2>YT Life</h2>
+                    <ul id="yt-list"></ul>
+                </div>
+                <div class="widget">
+                    <h2>Upcoming Articles</h2>
+                    <ul id="articles-list"></ul>
+                </div>
+                <div class="widget">
+                    <h2>SQL</h2>
+                    <ul id="sql-list"></ul>
+                </div>
+                <div class="widget">
+                    <h2>GATE 2026</h2>
+                    <ul id="gate-list"></ul>
+                </div>
+                <div class="widget">
+                    <h2>DSA</h2>
+                    <ul id="dsa-list"></ul>
+                </div>
+                <div class="widget profile-widget">
+                    <div class="levitating-circle">
+                        <img src="profile.png" alt="Profile">
+                    </div>
+
+                </div>
+                <div class="widget shortcuts-widget">
+                    <h2>Hey Vedang! <br> Here's quick shortcuts for you..</h2>
+                    <div class="shortcuts">
+                        <a href="https://linkedin.com" target="_blank" class="shortcut">
+                            <img src="linkedin.png" alt="LinkedIn">
+                        </a>
+                        <a href="https://github.com" target="_blank" class="shortcut">
+                            <img src="github.png" alt="GitHub">
+                        </a>
+                        <a href="https://medium.com" target="_blank" class="shortcut">
+                            <img src="medium.png" alt="Medium">
+                        </a>
+                        <a href="https://youtube.com" target="_blank" class="shortcut">
+                            <img src="youtube.png" alt="YouTube">
+                        </a>
+                    </div>
+                </div>
+                <button class="add-task-btn" onclick="location.href='add_task.html'">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Generate months with highlight
+        const monthsEl = document.getElementById("months");
+        const months = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+        const currentMonth = new Date().getMonth();
+        months.forEach((month, i) => {
+            const span = document.createElement("span");
+            span.textContent = month;
+            if (i === currentMonth) span.classList.add("current");
+            monthsEl.appendChild(span);
+        });
+
+        // Generate calendar
+        function generateCalendar() {
+            const calendarEl = document.getElementById("calendar");
+            const today = new Date();
+            const month = today.getMonth();
+            const year = today.getFullYear();
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            let table = "<table><tr>";
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            days.forEach(day => table += `<th>${day}</th>`);
+            table += "</tr><tr>";
+
+            for (let i = 0; i < firstDay; i++) table += "<td></td>";
+            for (let d = 1; d <= daysInMonth; d++) {
+                const isToday = d === today.getDate();
+                table += `<td class="${isToday ? 'today' : ''}">${d}</td>`;
+                if ((d + firstDay) % 7 === 0) table += "</tr><tr>";
+            }
+            table += "</tr></table>";
+            calendarEl.innerHTML = table;
+        }
+        generateCalendar();
+
+        // Load tasks from localStorage
+        async function loadTasks() {
+            const checklists = {
+                "yt-list": "YT Life",
+                "articles-list": "Upcoming Articles",
+                "sql-list": "SQL",
+                "gate-list": "GATE 2026",
+                "dsa-list": "DSA"
+            };
+
+            for (const [listId, title] of Object.entries(checklists)) {
+                const ul = document.getElementById(listId);
+                ul.innerHTML = "";
+
+                const response = await fetch(`http://localhost:3001/tasks/${encodeURIComponent(title)}`);
+                const tasks = await response.json();
+
+                tasks.forEach((task, index) => {
+                    const li = document.createElement("li");
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.checked = task.done;
+
+                    checkbox.addEventListener("change", async () => {
+                        await fetch("http://localhost:3001/update-task", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ category: title, index, done: checkbox.checked })
+                        });
+                        loadTasks();
+                    });
+
+                    li.appendChild(checkbox);
+                    li.appendChild(document.createTextNode(task.text));
+                    ul.appendChild(li);
+                });
+            }
+        }
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+        (async () => {
+            const hash = await hashPassword("Vedang123"); // change password here
+            localStorage.setItem("dashboardPassword", hash);
+            console.log("Password set:", hash);
+        })();
+        async function checkPassword() {
+            const input = document.getElementById("password-input").value;
+            const storedHash = localStorage.getItem("dashboardPassword");
+            const inputHash = await hashPassword(input);
+
+            if (inputHash === storedHash) {
+                document.getElementById("login-screen").style.display = "none";
+                document.getElementById("dashboard-content").style.display = "block";
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+
+
+        loadTasks();
+    </script>
+
+
+</body>
+
+</html>
