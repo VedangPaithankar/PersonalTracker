@@ -1,13 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
-const PORT = 3001; // choose your port for this project
+const PORT = 3001;
 
 app.use(bodyParser.json());
 app.use(cors());
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, "../frontend")));
+
+// Example tasks structure
 let tasks = {
   "YT Life": [],
   "Upcoming Articles": [],
@@ -16,7 +21,7 @@ let tasks = {
   "DSA": []
 };
 
-// Add a task
+// API endpoints
 app.post("/add-task", (req, res) => {
   const { category, text } = req.body;
   if (!category || !text) return res.status(400).json({ error: "Missing data" });
@@ -24,13 +29,11 @@ app.post("/add-task", (req, res) => {
   res.json({ success: true });
 });
 
-// Get tasks for category
 app.get("/tasks/:category", (req, res) => {
   const category = req.params.category;
   res.json(tasks[category] || []);
 });
 
-// Update task done status
 app.post("/update-task", (req, res) => {
   const { category, index, done } = req.body;
   if (tasks[category] && tasks[category][index]) {
@@ -39,6 +42,11 @@ app.post("/update-task", (req, res) => {
   res.json({ success: true });
 });
 
+// Serve index by default
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dashboard.html"));
+});
+
 app.listen(PORT, () => {
-  console.log(`Backend running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
