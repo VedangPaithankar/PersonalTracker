@@ -18,7 +18,7 @@ fi
 npm install express body-parser cors
 
 pkill -f "node server.js"
-nohup node server.js > server.log 2>&1 &
+nohup node server.js > server.log &
 
 # --- Frontend ---
 cd $BASE_DIR/frontend || exit 1
