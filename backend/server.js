@@ -46,11 +46,6 @@ app.post("/update-task", (req, res) => {
   res.json({ success: true });
 });
 
-// Serve index by default
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dashboard.html"));
-});
-
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
