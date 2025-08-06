@@ -8,6 +8,9 @@ BASE_DIR=~/storage/shared/Server/Projects/$PROJECT_NAME
 
 echo "Deploying $PROJECT_NAME..."
 
+kill -9 $(lsof -ti:3000)
+kill -9 $(lsof -ti:3001)
+
 # --- Backend ---
 cd $BASE_DIR/backend || exit 1
 if [ -f "package.json" ] && [ ! -d "node_modules" ]; then
