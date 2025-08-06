@@ -8,26 +8,32 @@ BASE_DIR=~/storage/shared/Server/Projects/$PROJECT_NAME
 
 echo "Deploying $PROJECT_NAME..."
 
-kill -9 $(lsof -ti:3000)
-kill -9 $(lsof -ti:3001)
-
 # --- Backend ---
 cd $BASE_DIR/backend || exit 1
+
 if [ -f "package.json" ] && [ ! -d "node_modules" ]; then
     echo "Installing backend dependencies..."
     npm install
 fi
-
 npm install express body-parser cors
 
-pkill -f "node server.js"
-nohup node server.js > server.log &
+# Kill old backend safely
+pkill -f "node server.js" 2>/dev/null || true
+
+# Start backend
+nohup node server.js > $BASE_DIR/backend/server.log 2>&1 &
 
 # --- Frontend ---
 cd $BASE_DIR/frontend || exit 1
-pkill -f "serve_frontend.py"
-nohup python3 serve_frontend.py &
+
+# Kill old frontend safely
+pkill -f "serve_frontend.py" 2>/dev/null || true
+pkill -f "http.server $FRONTEND_PORT" 2>/dev/null || true
+
+# Start frontend
+nohup python3 serve_frontend.py > $BASE_DIR/frontend/frontend.log 2>&1 &
 
 echo "$PROJECT_NAME deployed successfully!"
 echo "Frontend: http://localhost:$FRONTEND_PORT/"
 echo "Backend: http://localhost:$BACKEND_PORT/"
+
